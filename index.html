@@ -1,134 +1,201 @@
 <html>
     <head>
         <title>
-            Heckfire Token Calculator
+            Heckfire Tools
         </title>
-    </head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+          </head>
     <body>
-        <h2>Heckfire Token Calculator</h2>
-        <div>
-            <label for="500">500: </label>
-            <input type="number" name="500" oninput="product(this.value, 500, '500-product')"/>
-            <span class="product" id="500-product">0</span>
-        </div>
-        <div>
-                <label for="1000">1,000: </label>
-                <input type="number" name="1000" oninput="product(this.value, 1000, '1000-product')"/>
-                <span class="product" id="1000-product">0</span>
-        </div>
-        <div>
-                <label for="2500">2,500: </label>
-                <input type="number" name="2500" oninput="product(this.value, 2500, '2500-product')"/>
-                <span class="product" id="2500-product">0</span>
-        </div>
-        <div>
-                <label for="5000">5,000: </label>
-                <input type="number" name="5000" oninput="product(this.value, 5000, '5000-product')"/>
-                <span class="product" id="5000-product">0</span>
-        </div>
-        <div>
-                <label for="10000">10,000: </label>
-                <input type="number" name="10000" oninput="product(this.value, 10000, '10000-product')"/>
-                <span class="product" id="10000-product">0</span>
-        </div>
-        <div>
-                <label for="25000">25,000: </label>
-                <input type="number" name="25000" oninput="product(this.value, 25000, '25000-product')"/>
-                <span class="product" id="25000-product">0</span>
-        </div>
-        <div>
-                <label for="50000">50,000: </label>
-                <input type="number" name="50000" oninput="product(this.value, 50000, '50000-product')"/>
-                <span class="product" id="50000-product">0</span>
-        </div>
-        <div>
-                <label for="100000">100,000: </label>
-                <input type="number" name="100000" oninput="product(this.value, 100000, '100000-product')"/>
-                <span class="product" id="100000-product">0</span>
-        </div>
-        <div>
-                <label for="250000">250,000: </label>
-                <input type="number" name="250000" oninput="product(this.value, 250000, '250000-product')"/>
-                <span class="product" id="250000-product">0</span>
-        </div>
-        <div>
-                <label for="500000">500,000: </label>
-                <input type="number" name="500000" oninput="product(this.value, 500000, '500000-product')"/>
-                <span class="product" id="500000-product">0</span>
-        </div>
-        <div>
-                <label for="1000000">1,000,000: </label>
-                <input type="number" name="1000000" oninput="product(this.value, 1000000, '1000000-product')"/>
-                <span class="product" id="1000000-product">0</span>
-        </div>
-        <div>
-                <label for="2500000">2,500,000: </label>
-                <input type="number" name="2500000" oninput="product(this.value, 2500000, '2500000-product')"/>
-                <span class="product" id="2500000-product">0</span>
-        </div>
-        <div>
-                <label for="5000000">5,000,000: </label>
-                <input type="number" name="5000000" oninput="product(this.value, 5000000, '5000000-product')"/>
-                <span class="product" id="5000000-product">0</span>
-        </div>
-        <div id="total">
-            <label for="total">Grand Total</label>
-            <span id="spacer"></span>
-            <span id="grand-total">0</span>
-        </div>
-    </body>
-    <script>
-        function product(count, val, name) {
-            document.getElementById(name).textContent = Number(count*val).toLocaleString();
-            sum()
-        }
-        
-        function sum() {
-            var num = document.querySelectorAll(".product");
-            console.log(num);
-            var total = 0;
+        <div id="app">
+            <v-app>
+                <v-container>
+                    <v-card>
+                        <h2 style="text-align:center">Heckfire Tools</h2>
 
-            num.forEach(item => total += parseInt(item.innerText.replace(/,/g, "")));
-        
-            document.getElementById("grand-total").textContent = Number(total).toLocaleString();
-        }
-    </script>
-    <style>
-        html, body {
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 1.2em;
-            margin: 0;
-            padding: 0;
-        }
-        div {
-            padding: .75em;
-            display: flex;
-        }
-        label {
-            width: 10%;
-            min-width: 150px;
-        }
-        input, #spacer {
-            width: 20%;
-            font-size: 1em
-        }
-        span {
-            padding-left: 3em;
-        }
-        #grand-total {
-            padding-left: 0;
-            font-weight: bold
-        }
-        div:nth-of-type(even) {
-            background-color: rgba(136, 52, 4, 0.13)
-        } 
-        div:nth-of-type(odd) {
-            background-color: rgba(13, 126, 9, 0.185)
-        } 
-        h2 {
-            background-color: rgba(136, 52, 4, 0.13);
-            margin: 0;
-            padding: .75em;
-        }
+                        <!-- tabs -->
+                        <v-tabs grow v-model="activeTab">
+                            <v-tab v-for="tab of tabs" :key="tab.id">
+                              {{tab.name}}
+                            </v-tab>
+                          </v-tabs>
+                          
+                     <!-- tab 1-->
+                      <div v-if="activeTab === 0">
+                          <v-container>
+                        <v-row 
+                        align="center"      
+                        justify="center"
+                        no-gutters
+                          v-for="token in tokenValues">
+                            <v-col cols="3">
+                                <label style="float: right;margin-right: 20px;" :for="token.value">{{ token.value.toLocaleString() }} </label>
+                            </v-col>
+                            <v-col>
+                                <v-text-field
+                                clearable
+                                single-line
+                                dense
+                                type="number" :name="token.value" v-model="token.count"></v-text-field>
+                            </v-col>
+                            <v-col cols="3" style="margin:20px;">
+                                <span class="product" :id="token.value + '-product'">{{ (token.value * token.count).toLocaleString() }}</span>
+                                                        </v-col>
+
+                        </v-row>
+                    </v-container>
+                    <v-toolbar                        
+                    align="center"      
+                    justify="center"
+                    no-gutters
+                    dense
+                    bottom
+                    style="height: 4em;padding-left:2em;">
+                        <v-col>
+                            <div id="total">
+                                <label for="total">Grand Total: </label>
+                                <span id="spacer"></span>
+                                <span id="grand-total">{{ getTotals().toLocaleString() }}</span>
+                            </div>
+                        </v-col>
+                    </div>
+                    </v-toolbar>
+                      <!-- tab 2 -->
+                    <v-container style="min-height:600px;" v-if="activeTab === 1">
+                        <v-row style="background-color:snow;padding-top:10px;">
+                            <v-col cols="3"                         
+                            justify="center"
+                            >    <p>
+                                Expendable Ally Gold:
+
+                            </p>                            
+                            </v-col>
+                            <v-col cols="4">
+                                <v-text-field                                 
+                                clearable
+                                single-line
+                                dense
+                                type="number" name="ally-gold-amount" v-model="allyGold" v-on:keyup="calculateGold"></v-text-field>
+                            </v-col>
+                        </v-row>
+                            <div v-for="ally in alliesAboveMax" style="color:666">
+                                {{ ally.toLocaleString() }}
+                            </div>
+                            <v-divider></v-divider>
+                            <div v-if="allyMax" class="bold" style="font-weight:bold;color:333">
+                                {{ allyMax.toLocaleString() }}
+                            </div>
+                            <v-divider></v-divider>
+                            <div v-for="ally in alliesBelowMax" style="color:666">
+                                {{ ally.toLocaleString() }}
+                            </div>
+                    </v-container>
+                    <!-- tab 3 -->
+                    <v-container v-if="activeTab === 2">
+                        Quest Timer coming soon for now visit<br/>
+                        <a href="https://heckfire.azurewebsites.net/">https://heckfire.azurewebsites.net/</a>
+                        
+                    </v-container>
+                </v-card>
+            </v-containerapp style="max-height:100%;">
+             </v-app>
+            </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>      
+        <script src="token-calc.js"></script>
+    </body style="max-height:100%;">
+
+<style>
+    #grand-total {
+        font-weight: bold
+    }
+
+    .row:nth-of-type(odd) {
+        background-color: rgba(13, 126, 9, 0.185)
+    } 
     </style>
+    <script>
+    const app = new Vue({ 
+    el: '#app',
+    vuetify: new Vuetify(),
+    methods: {
+        getTotals: function() {
+            return this.tokenValues.reduce((acc, cur) => acc + (cur.value * cur.count), 0);
+        },
+        calculateGold: function () {
+            this.alliesBelowMax = [];
+            this.alliesAboveMax = [];
+            this.allyMax = null;
+            let price = 100
+                while (price <= this.allyGold) {
+                    this.alliesBelowMax.unshift(parseInt(price *= 1.05, 10));
+                    if(this.alliesBelowMax.length > 10) {
+                        this.alliesBelowMax.pop();
+                    }
+                }
+                this.allyMax = this.alliesBelowMax.shift();
+                this.alliesAboveMax.unshift(parseInt(price *= 1.05, 10));
+                this.alliesAboveMax.unshift(parseInt(price *= 1.05, 10));
+                this.alliesAboveMax.unshift(parseInt(price *= 1.05, 10));
+        }
+    },
+    data: {
+        activeTab: 0,
+        tabs: [
+            { id: 1, name: 'Token Calculator' },
+            { id: 2, name: 'Ally Gold' },
+            { id: 3, name: 'Quest Timer'}
+        ],
+        tokenValues: [
+            {
+                value: 500,
+                count: null
+            },            {
+                value: 1000,
+                count: null
+            },            {
+                value: 2500,
+                count: null
+            },            {
+                value: 5000,
+                count: null
+            },            {
+                value: 10000,
+                count: null
+            },            {
+                value: 25000,
+                count: null
+            },            {
+                value: 50000,
+                count: null
+            },            {
+                value: 100000,
+                count: null
+            },            {
+                value: 250000,
+                count: null
+            },            {
+                value: 500000,
+                count: null
+            },            {
+                value: 1000000,
+                count: null
+            },            {
+                value: 2500000,
+                count: null
+            },            {
+                value: 5000000,
+                count: null
+            },
+        ],
+        // ally costs
+        allyGold: null,
+        allyMax: null,
+        alliesAboveMax: [],
+        alliesBelowMax: []
+    }
+});
+    </script>
 </html>
