@@ -130,15 +130,19 @@
             this.allyMax = null;
             let price = 100
                 while (price <= this.allyGold) {
-                    this.alliesBelowMax.unshift(Math.floor(price *= 1.05));
+                    this.alliesBelowMax.unshift(price);
+                    price = Math.floor(price * 1.05);
                     if(this.alliesBelowMax.length > 10) {
                         this.alliesBelowMax.pop();
                     }
                 }
                 this.allyMax = this.alliesBelowMax.shift();
-                this.alliesAboveMax.unshift(Math.floor(price *= 1.05));
-                this.alliesAboveMax.unshift(Math.floor(price *= 1.05));
-                this.alliesAboveMax.unshift(Math.floor(price *= 1.05));
+                price = Math.floor(price * 1.05);
+                this.alliesAboveMax.unshift(price);
+                price = Math.floor(price * 1.05);
+                this.alliesAboveMax.unshift(price);                
+                price = Math.floor(price * 1.05);
+                this.alliesAboveMax.unshift(price);
         }
     },
     data: {
