@@ -6,7 +6,6 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
           </head>
     <body>
         <div id="app">
@@ -29,7 +28,7 @@
                         align="center"      
                         justify="center"
                         no-gutters
-                          v-for="token in tokenValues">
+                          v-for="token in tokenValues" :key="token.value">
                             <v-col cols="3">
                                 <label style="float: right;margin-right: 20px;" :for="token.value">{{ token.value.toLocaleString() }} </label>
                             </v-col>
@@ -77,20 +76,41 @@
                                 clearable
                                 single-line
                                 dense
-                                type="number" name="ally-gold-amount" v-model="allyGold" v-on:keyup="calculateGold"></v-text-field>
+                                name="ally-gold-amount" v-model="allyGold" v-on:keyup="calculateGold"></v-text-field>
                             </v-col>
                         </v-row>
-                            <div v-for="ally in alliesAboveMax" style="color:666">
+                            <div v-for="ally in alliesAboveMax" :key="ally" style="color:666">
                                 {{ ally.toLocaleString() }}
+                                <button type="button"  v-clipboard:copy="ally"
+                                v-clipboard:success="doCopy">Copy!</button>
                             </div>
                             <v-divider></v-divider>
                             <div v-if="allyMax" class="bold" style="font-weight:bold;color:333">
                                 {{ allyMax.toLocaleString() }}
+                                <button type="button" v-clipboard:copy="allyMax"
+                                v-clipboard:success="doCopy">Copy!</button>
                             </div>
                             <v-divider></v-divider>
-                            <div v-for="ally in alliesBelowMax" style="color:666">
+                            <div v-for="ally in alliesBelowMax" :key="ally" style="color:666">
                                 {{ ally.toLocaleString() }}
+                                <button type="button"  v-clipboard:copy="ally"
+                                v-clipboard:success="doCopy">Copy!</button>
                             </div>
+
+                            <v-snackbar
+                            v-model="snackbar"
+                            :timeout="1000">
+                            Copied!
+                          <v-btn
+                              color="red"
+                              text
+                              @click="snackbar = false"
+                            >
+                              Close
+                            </v-btn>
+                          </v-snackbar>
+
+
                     </v-container>
                     <!-- tab 3 -->
                     <v-container v-if="activeTab === 2">
@@ -102,9 +122,10 @@
             </v-containerapp style="max-height:100%;">
              </v-app>
             </div>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>      
-        <script src="token-calc.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vuetify@2.2.12/dist/vuetify.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-clipboard2@0.3.1/dist/vue-clipboard.min.js"></script>
     </body style="max-height:100%;">
 
 <style>
@@ -121,6 +142,9 @@
     el: '#app',
     vuetify: new Vuetify(),
     methods: {
+        doCopy: function() {
+            this.snackbar=true;
+        },
         getTotals: function() {
             return this.tokenValues.reduce((acc, cur) => acc + (cur.value * cur.count), 0);
         },
@@ -129,7 +153,7 @@
             this.alliesAboveMax = [];
             this.allyMax = null;
             let price = 100
-                while (price <= this.allyGold) {
+                while (price <= parseInt(this.allyGold.replace(/,/g, ''))) {
                     this.alliesBelowMax.unshift(price);
                     price = Math.floor(price * 1.05);
                     if(this.alliesBelowMax.length > 10) {
@@ -146,6 +170,7 @@
         }
     },
     data: {
+        snackbar: false,
         activeTab: 0,
         tabs: [
             { id: 1, name: 'Token Calculator' },
